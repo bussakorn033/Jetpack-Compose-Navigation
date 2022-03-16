@@ -1,6 +1,7 @@
 package com.example.testnavigate.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -9,13 +10,15 @@ import androidx.navigation.navArgument
 import com.example.testnavigate.screens.add.AddScreen
 import com.example.testnavigate.screens.detail.DetailScreen
 import com.example.testnavigate.screens.home.HomeScreen
+import com.example.testnavigate.screens.home.children.ChildrenHomeScreen
 import com.example.testnavigate.screens.jobs.JobsScreen
 import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, modifier: Modifier=Modifier) {
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = "home_screen"
     ) {
@@ -24,6 +27,13 @@ fun Navigation(navController: NavHostController) {
 //            arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) {
             HomeScreen(
+                navController = navController
+            )
+        }
+        composable(
+            route = "children_home_screen",
+        ) {
+            ChildrenHomeScreen(
                 navController = navController
             )
         }
@@ -60,7 +70,7 @@ fun Navigation(navController: NavHostController) {
         composable(
             route = "jobs_screen",
         ) {
-           JobsScreen(
+            JobsScreen(
                 navController = navController
             )
         }

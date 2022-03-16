@@ -1,25 +1,21 @@
 package com.example.testnavigate.navigation
 
 import android.widget.Toast
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -27,18 +23,43 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun MainScreenView() {
     val navController = rememberNavController()
+    val scrollState = rememberScrollState()
     Scaffold(
-        topBar = { TopBar(title = "Test Navigate") },
+        topBar = {
+            TopBar(
+                title = "Test Navigate",
+                navController = navController
+            )
+        },
         bottomBar = { BottomBar(navController = navController) },
-    ) {
-        Navigation(navController = navController)
+    ) { innerPadding ->
+        Navigation(
+            modifier = Modifier
+                .padding(innerPadding)
+                .scrollable(
+                    state = scrollState,
+                    orientation = Orientation.Vertical
+                )
+            ,
+            navController = navController
+        )
     }
 }
 
 
 /* ----------------------- TopAppBar ----------------------- */
+@Preview(showBackground = true)
 @Composable
-fun TopBar(title: String) {
+fun TopBarPreview() {
+    val navController = rememberNavController()
+    TopBar(
+        title = "Test Navigate",
+        navController = navController
+    )
+}
+
+@Composable
+fun TopBar(title: String, navController: NavHostController) {
     val context = LocalContext.current
     TopAppBar(
         backgroundColor = Color.Black,
@@ -51,55 +72,44 @@ fun TopBar(title: String) {
             )
         },
         actions = {
-            IconButton(onClick = {
-                Toast.makeText(
-                    context,
-                    "click Favorite",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }) {
-                Icon(Icons.Filled.Favorite, contentDescription = "Favorite")
-            }
-
-            IconButton(onClick = {
-                Toast.makeText(
-                    context,
-                    "click Search",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }) {
-                Icon(Icons.Filled.Search, contentDescription = "Search")
-            }
-
-            IconButton(onClick = {
-                Toast.makeText(
-                    context,
-                    "click MoreVert",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "MoreVert")
+            val items = listOf(
+                TopNavItem.Favorite,
+                TopNavItem.Search,
+                TopNavItem.MoreVert,
+            )
+            items.forEach { item ->
+                IconButton(onClick = {
+                    navController.navigate(item.screen_route)
+                    Toast.makeText(
+                        context,
+                        "click ${item.title}",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }) {
+                    Icon(item.icon, contentDescription = "${item.title}")
+                }
             }
         },
         navigationIcon = {
+            val Menu = TopNavItem.Menu
             IconButton(onClick = {
+                navController.navigate(Menu.screen_route)
                 Toast.makeText(
                     context,
-                    "click Menu",
+                    "click ${Menu.title}",
                     Toast.LENGTH_SHORT
                 )
                     .show()
             }) {
                 Icon(
-                    Icons.Filled.Menu,
-                    contentDescription = "Menu",
+                    Menu.icon,
+                    contentDescription = "${Menu.title}",
                     modifier = Modifier
                         .size(30.dp)
                 )
             }
+
         }
     )
 
@@ -118,7 +128,7 @@ fun BottomNavigationBarPreview() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val items = listOf(
-        BottomNavItem.Home,
+        BottomNavItem.Home(),
         BottomNavItem.MyNetwork,
         BottomNavItem.AddPost,
         BottomNavItem.Notification,

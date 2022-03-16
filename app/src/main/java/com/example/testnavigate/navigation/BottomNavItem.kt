@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.testnavigate.R
 
 sealed class BottomNavItem(var title:String, var icon: ImageVector, var screen_route:String){
-    object Home : BottomNavItem("Home", Icons.Filled.Home,"home_screen")
+    class Home : BottomNavItem("Home", Icons.Filled.Home,"home_screen")
     object MyNetwork: BottomNavItem("My Network",Icons.Filled.Group,"mynetwork_screen")
 //    object MyNetwork: BottomNavItem("My Network",R.drawable.ic_group,"mynetwork_screen")
     object AddPost: BottomNavItem("Post",Icons.Filled.Add,"add_screen")
