@@ -27,7 +27,7 @@ fun MainScreenView() {
     Scaffold(
         topBar = {
             TopBar(
-                title = "Test Navigate",
+                title = "Test Navigate ${""}",
                 navController = navController
             )
         },
@@ -39,10 +39,12 @@ fun MainScreenView() {
                 .scrollable(
                     state = scrollState,
                     orientation = Orientation.Vertical
-                )
-            ,
+                ),
             navController = navController
         )
+//    NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding)) {
+//        composable(Screen.Profile.route) { Profile(navController) }
+//        composable(Screen.FriendsList.route) { FriendsList(navController) }
     }
 }
 
@@ -64,10 +66,31 @@ fun TopBar(title: String, navController: NavHostController) {
     TopAppBar(
         backgroundColor = Color.Black,
         contentColor = Color(0xFFFFC0CB),
+        navigationIcon = {
+            val Menu = TopNavItem.Menu
+            IconButton(onClick = {
+                navController.navigate(Menu.screen_route)
+                Toast.makeText(
+                    context,
+                    "click ${Menu.title}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }) {
+                Icon(
+                    Menu.icon,
+                    contentDescription = "${Menu.title}",
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+            }
+
+        },
         title = {
             Text(
                 text = title,
                 maxLines = 1,
+//                fontSize = 10.sp,
                 overflow = TextOverflow.Ellipsis,
             )
         },
@@ -91,26 +114,7 @@ fun TopBar(title: String, navController: NavHostController) {
                 }
             }
         },
-        navigationIcon = {
-            val Menu = TopNavItem.Menu
-            IconButton(onClick = {
-                navController.navigate(Menu.screen_route)
-                Toast.makeText(
-                    context,
-                    "click ${Menu.title}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }) {
-                Icon(
-                    Menu.icon,
-                    contentDescription = "${Menu.title}",
-                    modifier = Modifier
-                        .size(30.dp)
-                )
-            }
 
-        }
     )
 
 }
@@ -128,7 +132,7 @@ fun BottomNavigationBarPreview() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val items = listOf(
-        BottomNavItem.Home(),
+        BottomNavItem.Home,
         BottomNavItem.MyNetwork,
         BottomNavItem.AddPost,
         BottomNavItem.Notification,
@@ -140,6 +144,7 @@ fun BottomBar(navController: NavHostController) {
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
+        val context = LocalContext.current
         items.forEach { item ->
             BottomNavigationItem(
                 /*painterResource(id = item.icon)*/
@@ -156,6 +161,12 @@ fun BottomBar(navController: NavHostController) {
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {
+                    Toast.makeText(
+                        context,
+                        "From->$currentRoute\nTo->${item.screen_route}",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
                     navController.navigate(item.screen_route) {
 
                         navController.graph.startDestinationRoute?.let { screen_route ->

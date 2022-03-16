@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,18 +19,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigator
+import androidx.navigation.navArgument
+import androidx.navigation.navOptions
+import com.example.testnavigate.api.TodoViewModel
 import com.example.testnavigate.components.ModalMessage
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val (openModal, setOpenModal) = remember { mutableStateOf(false) }
-    val scrollState = rememberScrollState()
+
     Box(
         modifier = Modifier
-                .scrollable(
-                    state = scrollState,
-                    orientation = Orientation.Vertical
-                )
             .background(Color.Blue)
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -47,7 +48,7 @@ fun HomeScreen(navController: NavHostController) {
                 textAlign = TextAlign.Center,
                 color = Color(0xffffffff)
             )
-            Row() {
+            Row(modifier = Modifier.padding(16.dp)) {
 
                 Button(
                     modifier = Modifier.weight(1f),
@@ -63,7 +64,7 @@ fun HomeScreen(navController: NavHostController) {
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                    navController.navigate("children_home_screen")
+                        navController.navigate("children_home_screen")
                     }
                 ) {
                     Text("Children")
@@ -74,16 +75,18 @@ fun HomeScreen(navController: NavHostController) {
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        navController.navigate("detail_screen/UserId_1")
+                        navController.navigate("detail_screen/UserId_1") {
+                            popUpTo("home_screen") { inclusive = true }
+                        }
                     }
                 ) {
                     Text("Detail")
                 }
             }
-            ModalMessage(
-                openModal = openModal,
-                closeModal = { setOpenModal(false) }
-            )
         }
     }
+    ModalMessage(
+        openModal = openModal,
+        closeModal = { setOpenModal(false) }
+    )
 }

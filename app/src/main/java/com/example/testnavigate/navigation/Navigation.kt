@@ -1,5 +1,6 @@
 package com.example.testnavigate.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -16,7 +17,7 @@ import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen
 
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier=Modifier) {
+fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -39,7 +40,10 @@ fun Navigation(navController: NavHostController, modifier: Modifier=Modifier) {
         }
         composable(
             route = "detail_screen/{userId}",
-            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+            arguments =
+            listOf(navArgument("userId")
+            { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             DetailScreen(
                 navController = navController,
