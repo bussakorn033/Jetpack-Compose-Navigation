@@ -1,6 +1,5 @@
 package com.example.testnavigate.navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -10,14 +9,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.testnavigate.screens.add.AddScreen
 import com.example.testnavigate.screens.detail.DetailScreen
+import com.example.testnavigate.screens.childrenDetail.ChildrenDetailScreen
 import com.example.testnavigate.screens.home.HomeScreen
 import com.example.testnavigate.screens.home.children.ChildrenHomeScreen
 import com.example.testnavigate.screens.jobs.JobsScreen
 import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen
+import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
+fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, vm:TodoViewModel) {
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -35,7 +36,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             route = "children_home_screen",
         ) {
             ChildrenHomeScreen(
-                navController = navController
+                navController = navController,
             )
         }
         composable(
@@ -47,7 +48,21 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         ) { backStackEntry ->
             DetailScreen(
                 navController = navController,
-                userId = backStackEntry.arguments?.getString("userId")
+                userId = backStackEntry.arguments?.getString("userId"),
+            )
+        }
+        composable(
+//            route = "children_detail_screen",
+            route = "children_detail_screen/{id}",
+            arguments =
+            listOf(navArgument("id")
+            { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            ChildrenDetailScreen(
+                navController = navController,
+                userId = backStackEntry.arguments?.getString("id"),
+                vm=vm
             )
         }
         composable(

@@ -1,34 +1,29 @@
 package com.example.testnavigate.screens.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.testnavigate.api.TodoViewModel
+import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
 fun DetailScreen(navController: NavHostController, userId: String?) {
     val vm = TodoViewModel()
+    vm.getTodoList()
 
     LaunchedEffect(Unit, block = {
-        vm.getTodoList()
+    vm.getTodoList()
     })
 
     if (vm.errorMessage.isEmpty()) {
@@ -50,39 +45,57 @@ fun DetailScreen(navController: NavHostController, userId: String?) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(horizontal = 16.dp),
             ) {
-                items(vm.todoList) { todo ->
-                    Column {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp, vertical = 16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.8f)
-                                    .padding(0.dp, 0.dp, 0.dp, 0.dp)
-                            ) {
-                                Text(
-                                    "${todo.id}. ${todo.title}",
-//                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                itemsIndexed(vm.todoList) { index, todo ->
+                    val context = LocalContext.current
+                    Column() {
+                        TextButton(
+                            onClick = {
+                                /*TODO*/
+                                navController.navigate("children_detail_screen/${todo.id}") {
+                                    popUpTo("detail_screen") { saveState = true }
+                                }
+                                Toast.makeText(
+                                    context,
+                                    "${todo}",
+                                    Toast.LENGTH_LONG
                                 )
+                                    .show()
                             }
+                        ) {
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth(0.8f)
+                                    ) {
+                                        Text(
+                                            "${index + 1}. ID:${todo.id} ${todo.title}",
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
 
-                            Spacer(modifier = Modifier.width(16.dp))
+                                    Spacer(modifier = Modifier.width(16.dp))
 
-                            Checkbox(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.2f),
-                                checked = todo.completed,
-                                onCheckedChange = null
-                            )
+                                    Checkbox(
+                                        modifier = Modifier
+                                            .fillMaxWidth(0.2f),
+                                        checked = todo.completed,
+                                        onCheckedChange = null
+                                    )
+                                }
+                            }
                         }
+
                         Divider()
                     }
+
                 }
             }
         }

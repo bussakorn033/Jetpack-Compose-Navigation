@@ -19,11 +19,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
 fun MainScreenView() {
     val navController = rememberNavController()
     val scrollState = rememberScrollState()
+    val vm = TodoViewModel()
+
     Scaffold(
         topBar = {
             TopBar(
@@ -40,7 +43,8 @@ fun MainScreenView() {
                     state = scrollState,
                     orientation = Orientation.Vertical
                 ),
-            navController = navController
+            navController = navController,
+            vm = vm,
         )
 //    NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding)) {
 //        composable(Screen.Profile.route) { Profile(navController) }
