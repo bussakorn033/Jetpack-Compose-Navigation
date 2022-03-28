@@ -30,7 +30,8 @@ fun HomeScreen(navController: NavHostController) {
         ) {
         Column(
             modifier = Modifier
-                .background(Color.DarkGray),
+                .background(Color.DarkGray)
+                .padding(horizontal = 32.dp, vertical = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -40,7 +41,8 @@ fun HomeScreen(navController: NavHostController) {
                 textAlign = TextAlign.Center,
                 color = Color(0xffffffff)
             )
-            Row(modifier = Modifier.padding(16.dp)) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row {
 
                 Button(
                     modifier = Modifier.weight(1f),
@@ -80,6 +82,19 @@ fun HomeScreen(navController: NavHostController) {
                 ) {
                     Text("Detail")
                 }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    navController.navigate("room_live_data") {
+                        popUpTo("home_screen") {
+                            saveState = true
+                        }
+                    }
+                }
+            ) {
+                Text("Room Live Data")
             }
         }
     }

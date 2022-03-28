@@ -1,4 +1,4 @@
-package com.example.testnavigate.components
+package com.example.testnavigate.room.product
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

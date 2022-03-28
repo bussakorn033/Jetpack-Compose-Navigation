@@ -3,9 +3,9 @@ package com.example.testnavigate.viewModel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.testnavigate.components.Product
-import com.example.testnavigate.components.ProductRepository
-import com.example.testnavigate.components.ProductRoomDatabase
+import com.example.testnavigate.room.product.Product
+import com.example.testnavigate.room.product.ProductRepository
+import com.example.testnavigate.room.product.ProductRoomDatabase
 
 class MainViewModel(application: Application) {
 

@@ -1,4 +1,4 @@
-package com.example.testnavigate.components
+package com.example.testnavigate.room.product
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

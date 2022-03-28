@@ -15,10 +15,11 @@ import com.example.testnavigate.screens.home.children.ChildrenHomeScreen
 import com.example.testnavigate.screens.jobs.JobsScreen
 import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen
+import com.example.testnavigate.screens.roomLiveData.RoomLiveDataScreen
 import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, vm:TodoViewModel) {
+fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, vm: TodoViewModel) {
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -38,6 +39,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
             ChildrenHomeScreen(
                 navController = navController,
             )
+        }
+        composable(
+            route = "room_live_data",
+        ) {
+            RoomLiveDataScreen()
         }
         composable(
             route = "detail_screen/{userId}",
@@ -62,7 +68,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
             ChildrenDetailScreen(
                 navController = navController,
                 userId = backStackEntry.arguments?.getString("id"),
-                vm=vm
+                vm = vm
             )
         }
         composable(
