@@ -80,7 +80,7 @@ fun Navigation(
             )
         ) { backStackEntry ->
             callBackTopBarTitle("Children Detail")
-            callBackTopBarGoBack(false)
+            callBackTopBarGoBack(true)
             ChildrenDetailScreen(
                 navController = navController,
                 userId = backStackEntry.arguments?.getString("id"),
