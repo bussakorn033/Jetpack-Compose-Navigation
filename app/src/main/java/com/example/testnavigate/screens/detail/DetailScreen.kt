@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +24,7 @@ fun DetailScreen(navController: NavHostController, userId: String?) {
     vm.getTodoList()
 
     LaunchedEffect(Unit, block = {
-    vm.getTodoList()
+        vm.getTodoList()
     })
 
     if (vm.errorMessage.isEmpty()) {
@@ -33,13 +34,14 @@ fun DetailScreen(navController: NavHostController, userId: String?) {
                     .fillMaxWidth()
                     .background(Color(0xffffc0cb).copy(1f)),
             ) {
-
-                Text(
-                    modifier = Modifier
-                        .padding(16.dp),
-                    text = "API userID : $userId",
-                    fontWeight = FontWeight.Medium
-                )
+                Row(verticalAlignment = Alignment.CenterVertically){
+                    Text(
+                        modifier = Modifier
+                            .padding(16.dp),
+                        text = "API userID : $userId",
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
 
             LazyColumn(

@@ -1,15 +1,21 @@
 package com.example.testnavigate.navigation
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,18 +26,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.testnavigate.viewModel.TodoViewModel
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 @Composable
 fun MainScreenView() {
     val navController = rememberNavController()
     val scrollState = rememberScrollState()
     val vm = TodoViewModel()
-
+    var (callBackTopBarTitle, setCallBackTopBarTitle) = rememberSaveable { mutableStateOf("") }
+    var (callBackTopBarGoBack, setCallTopBarGoBack) = rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopBar(
-                title = "Test Navigate ${""}",
-                navController = navController
+                title = "${callBackTopBarTitle}",
+                navController = navController,
+                callBackTopBarGoBack = callBackTopBarGoBack
             )
         },
         bottomBar = { BottomBar(navController = navController) },
@@ -45,7 +54,18 @@ fun MainScreenView() {
                 ),
             navController = navController,
             vm = vm,
-        )
+            callBackTopBarTitle = { callBackTopBarTitle ->
+                setCallBackTopBarTitle(
+                    callBackTopBarTitle
+                )
+            },
+            callBackTopBarGoBack = { callBackTopBarGoBack ->
+                setCallTopBarGoBack(
+                    callBackTopBarGoBack
+                )
+            },
+
+            )
 //    NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding)) {
 //        composable(Screen.Profile.route) { Profile(navController) }
 //        composable(Screen.FriendsList.route) { FriendsList(navController) }
@@ -60,33 +80,55 @@ fun TopBarPreview() {
     val navController = rememberNavController()
     TopBar(
         title = "Test Navigate",
-        navController = navController
+        navController = navController,
+        callBackTopBarGoBack = true
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TopBar(title: String, navController: NavHostController) {
+fun TopBar(
+    title: String,
+    navController: NavHostController,
+    callBackTopBarGoBack: Boolean
+) {
     val context = LocalContext.current
     TopAppBar(
         backgroundColor = Color.Black,
         contentColor = Color(0xFFFFC0CB),
         navigationIcon = {
-            val Menu = TopNavItem.Menu
-            IconButton(onClick = {
-                navController.navigate(Menu.screen_route)
-                Toast.makeText(
-                    context,
-                    "click ${Menu.title}",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }) {
-                Icon(
-                    Menu.icon,
-                    contentDescription = "${Menu.title}",
-                    modifier = Modifier
-                        .size(30.dp)
-                )
+            if (!callBackTopBarGoBack) {
+                val Menu = TopNavItem.Menu
+                IconButton(
+                    onClick = {
+                        navController.navigate(Menu.screen_route)
+                        Toast.makeText(
+                            context,
+                            "click ${Menu.title}",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    },
+                ) {
+                    Icon(
+                        Menu.icon,
+                        contentDescription = "${Menu.title}",
+                        modifier = Modifier
+                            .size(30.dp)
+                    )
+                }
+            } else {
+                IconButton(
+                    onClick = { navController.popBackStack() }
+                ) {
+                    Icon(
+                        Icons.Filled.ArrowBackIos,
+                        contentDescription = "ArrowBack",
+                        modifier = Modifier
+                            .size(26.dp)
+                            .absoluteOffset( x = 5.dp)
+                    )
+                }
             }
 
         },
@@ -94,32 +136,35 @@ fun TopBar(title: String, navController: NavHostController) {
             Text(
                 text = title,
                 maxLines = 1,
-//                fontSize = 10.sp,
                 overflow = TextOverflow.Ellipsis,
             )
         },
         actions = {
-            val items = listOf(
-                TopNavItem.Favorite,
-                TopNavItem.Search,
-                TopNavItem.MoreVert,
-            )
-            items.forEach { item ->
-                IconButton(onClick = {
-                    navController.navigate(item.screen_route)
-                    Toast.makeText(
-                        context,
-                        "click ${item.title}",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }) {
-                    Icon(item.icon, contentDescription = "${item.title}")
+            if (!callBackTopBarGoBack) {
+                val items = listOf(
+                    TopNavItem.Favorite,
+                    TopNavItem.Search,
+                    TopNavItem.MoreVert,
+                )
+                items.forEach { item ->
+                    IconButton(
+                        onClick = {
+                            navController.navigate(item.screen_route)
+                            Toast.makeText(
+                                context,
+                                "click ${item.title}",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                    ) {
+                        Icon(item.icon, contentDescription = "${item.title}")
+                    }
                 }
-            }
+            } else null
         },
 
-    )
+        )
 
 }
 /* ----------------------- TopAppBar ----------------------- */

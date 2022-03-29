@@ -5,25 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//class Product {
-//
-//    var id: Int = 0
-//    var productName: String = ""
-//    var quantity: Int = 0
-//
-//    constructor() {}
-//
-//    constructor(id: Int, productname: String, quantity: Int) {
-//        this.productName = productname
-//        this.quantity = quantity
-//    }
-//    constructor(productname: String, quantity: Int) {
-//        this.productName = productname
-//        this.quantity = quantity
-//    }
-//}
-
-
 @Entity(tableName = "products")
 class Product {
 

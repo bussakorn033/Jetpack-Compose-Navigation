@@ -19,7 +19,14 @@ import com.example.testnavigate.screens.roomLiveData.RoomLiveDataScreen
 import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, vm: TodoViewModel) {
+fun Navigation(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    vm: TodoViewModel,
+    callBackTopBarTitle: (String) -> Unit,
+    callBackTopBarGoBack: (Boolean) -> Unit,
+) {
+
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -29,6 +36,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
             route = "home_screen",
 //            arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) {
+            callBackTopBarTitle("Home")
+            callBackTopBarGoBack(false)
             HomeScreen(
                 navController = navController
             )
@@ -36,6 +45,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "children_home_screen",
         ) {
+            callBackTopBarTitle("Children Home")
+            callBackTopBarGoBack(true)
             ChildrenHomeScreen(
                 navController = navController,
             )
@@ -43,6 +54,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "room_live_data",
         ) {
+            callBackTopBarTitle("Room Live Data")
+            callBackTopBarGoBack(true)
             RoomLiveDataScreen()
         }
         composable(
@@ -52,19 +65,22 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
             { type = NavType.StringType }
             )
         ) { backStackEntry ->
+            callBackTopBarTitle("Detail")
+            callBackTopBarGoBack(true)
             DetailScreen(
                 navController = navController,
                 userId = backStackEntry.arguments?.getString("userId"),
             )
         }
         composable(
-//            route = "children_detail_screen",
             route = "children_detail_screen/{id}",
             arguments =
             listOf(navArgument("id")
             { type = NavType.StringType }
             )
         ) { backStackEntry ->
+            callBackTopBarTitle("Children Detail")
+            callBackTopBarGoBack(false)
             ChildrenDetailScreen(
                 navController = navController,
                 userId = backStackEntry.arguments?.getString("id"),
@@ -74,6 +90,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "mynetwork_screen",
         ) {
+            callBackTopBarTitle("My Network")
+            callBackTopBarGoBack(false)
             MyNetworkScreen(
                 navController = navController
             )
@@ -81,6 +99,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "add_screen",
         ) {
+            callBackTopBarTitle("Add")
+            callBackTopBarGoBack(false)
             AddScreen(
                 navController = navController
             )
@@ -88,6 +108,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "notification_screen",
         ) {
+            callBackTopBarTitle("Notification")
+            callBackTopBarGoBack(false)
             NotificationScreen(
                 navController = navController
             )
@@ -95,6 +117,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier, 
         composable(
             route = "jobs_screen",
         ) {
+            callBackTopBarTitle("Jobs")
+            callBackTopBarGoBack(false)
             JobsScreen(
                 navController = navController
             )
