@@ -19,11 +19,11 @@ fun RoomLiveDataItemScreen(
     viewModel: MainViewModel =
         MainViewModel(LocalContext.current.applicationContext as Application),
     navController: NavHostController,
-    productId: String?,
+    productId: Int,
 ) {
     val getIdProductResults by viewModel.getIdProductResults.observeAsState(Product())
 //    LaunchedEffect(Unit, block = {
-    viewModel.getIdProduct(Integer.parseInt(productId))
+    viewModel.getIdProduct(productId)
 //    })
 
 

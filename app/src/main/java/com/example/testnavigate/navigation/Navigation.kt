@@ -63,16 +63,13 @@ fun Navigation(
         }
         composable(
             route = "room_live_data_item/{productId}",
-            arguments =
-            listOf(navArgument("productId")
-            { type = NavType.StringType }
-            )
+            arguments = listOf(navArgument("productId") { type = NavType.IntType }),
         ) { backStackEntry ->
             callBackTopBarTitle("Room Live Data Item")
             callBackTopBarGoBack(true)
             RoomLiveDataItemScreen(
                 navController = navController,
-                productId = backStackEntry.arguments?.getString("productId"),
+                productId = backStackEntry.arguments!!.getInt("productId"),
             )
         }
         composable(
@@ -93,14 +90,14 @@ fun Navigation(
             route = "children_detail_screen/{id}",
             arguments =
             listOf(navArgument("id")
-            { type = NavType.StringType }
+            { type = NavType.IntType }
             )
         ) { backStackEntry ->
             callBackTopBarTitle("Children Detail")
             callBackTopBarGoBack(true)
             ChildrenDetailScreen(
                 navController = navController,
-                userId = backStackEntry.arguments?.getString("id"),
+                userId = backStackEntry.arguments!!.getInt("id"),
                 vm = vm
             )
         }

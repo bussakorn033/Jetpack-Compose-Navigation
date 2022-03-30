@@ -23,12 +23,12 @@ import com.example.testnavigate.viewModel.TodoViewModel
 
 
 @Composable
-fun ChildrenDetailScreen(navController: NavHostController, userId: String?, vm: TodoViewModel) {
+fun ChildrenDetailScreen(navController: NavHostController, userId: Int, vm: TodoViewModel) {
 //    val vm = TodoViewModel()
-    vm.getIdTodo(Integer.parseInt(userId))
+    vm.getIdTodo(userId)
 
     LaunchedEffect(Unit, block = {
-        vm.getIdTodo(Integer.parseInt(userId))
+        vm.getIdTodo(userId)
     })
 
     if (vm.errorMessage.isEmpty()) {
