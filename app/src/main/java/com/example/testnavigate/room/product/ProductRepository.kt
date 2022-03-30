@@ -8,7 +8,9 @@ class ProductRepository(private val productDao: ProductDao) {
 
     val allProducts: LiveData<List<Product>> = productDao.getAllProducts()
     val searchResults = MutableLiveData<List<Product>>()
+    val getIdProductResults = MutableLiveData<Product>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
 
     fun insertProduct(newproduct: Product) {
         coroutineScope.launch(Dispatchers.IO) {
@@ -31,5 +33,16 @@ class ProductRepository(private val productDao: ProductDao) {
     private fun asyncFind(name: String): Deferred<List<Product>?> =
         coroutineScope.async(Dispatchers.IO) {
             return@async productDao.findProduct(name)
+        }
+
+    fun getIdProduct(productId: Int) {
+        coroutineScope.launch(Dispatchers.Main) {
+            getIdProductResults.value = asyncGetIdProduct(productId).await()
+        }
+    }
+
+    private fun asyncGetIdProduct(productId: Int): Deferred<Product?> =
+        coroutineScope.async(Dispatchers.IO) {
+            return@async productDao.getIdProduct(productId)
         }
 }

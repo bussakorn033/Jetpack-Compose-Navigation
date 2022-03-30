@@ -29,7 +29,6 @@ fun ChildrenDetailScreen(navController: NavHostController, userId: String?, vm: 
 
     LaunchedEffect(Unit, block = {
         vm.getIdTodo(Integer.parseInt(userId))
-        println("vm.todoItem:${vm.todoItem}")
     })
 
     if (vm.errorMessage.isEmpty()) {

@@ -15,6 +15,8 @@ class Product {
 
     @ColumnInfo(name = "productName")
     var productName: String = ""
+
+    @ColumnInfo(name = "quantity")
     var quantity: Int = 0
 
     constructor() {}
@@ -24,8 +26,13 @@ class Product {
         this.productName = productname
         this.quantity = quantity
     }
+
     constructor(productname: String, quantity: Int) {
         this.productName = productname
         this.quantity = quantity
+    }
+
+    constructor(id: Int) {
+        this.id = id
     }
 }

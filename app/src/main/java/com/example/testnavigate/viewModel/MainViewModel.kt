@@ -12,6 +12,7 @@ class MainViewModel(application: Application) {
     val allProducts: LiveData<List<Product>>
     private val repository: ProductRepository
     val searchResults: MutableLiveData<List<Product>>
+    val getIdProductResults: MutableLiveData<Product>
 
     init {
         val productDb = ProductRoomDatabase.getInstance(application)
@@ -20,6 +21,7 @@ class MainViewModel(application: Application) {
 
         allProducts = repository.allProducts
         searchResults = repository.searchResults
+        getIdProductResults = repository.getIdProductResults
     }
 
     fun insertProduct(product: Product) {
@@ -32,5 +34,9 @@ class MainViewModel(application: Application) {
 
     fun deleteProduct(name: String) {
         repository.deleteProduct(name)
+    }
+
+    fun getIdProduct(productId: Int) {
+        repository.getIdProduct(productId)
     }
 }

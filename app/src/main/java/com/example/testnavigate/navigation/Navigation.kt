@@ -16,6 +16,7 @@ import com.example.testnavigate.screens.jobs.JobsScreen
 import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen
 import com.example.testnavigate.screens.roomLiveData.RoomLiveDataScreen
+import com.example.testnavigate.screens.roomLiveDataItem.RoomLiveDataItemScreen
 import com.example.testnavigate.viewModel.TodoViewModel
 
 @Composable
@@ -56,7 +57,23 @@ fun Navigation(
         ) {
             callBackTopBarTitle("Room Live Data")
             callBackTopBarGoBack(true)
-            RoomLiveDataScreen()
+            RoomLiveDataScreen(
+                navController = navController,
+            )
+        }
+        composable(
+            route = "room_live_data_item/{productId}",
+            arguments =
+            listOf(navArgument("productId")
+            { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            callBackTopBarTitle("Room Live Data Item")
+            callBackTopBarGoBack(true)
+            RoomLiveDataItemScreen(
+                navController = navController,
+                productId = backStackEntry.arguments?.getString("productId"),
+            )
         }
         composable(
             route = "detail_screen/{userId}",
