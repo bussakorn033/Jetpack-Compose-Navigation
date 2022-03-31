@@ -108,7 +108,7 @@ fun ProductRow(
         enabled = isButton,
         onClick = {
             if (isButton) {
-                navController.navigate("room_live_data_item/${id}") {
+                navController.navigate(route = "room_live_data_item/${id}") {
                     popUpTo("room_live_data") {
                         saveState = true
                     }

@@ -2,11 +2,8 @@ package com.example.testnavigate.screens.roomLiveDataItem
 
 import android.app.Application
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.example.testnavigate.room.product.Product
@@ -22,9 +19,7 @@ fun RoomLiveDataItemScreen(
     productId: Int,
 ) {
     val getIdProductResults by viewModel.getIdProductResults.observeAsState(Product())
-//    LaunchedEffect(Unit, block = {
     viewModel.getIdProduct(productId)
-//    })
 
 
 
@@ -36,8 +31,8 @@ fun RoomLiveDataItemScreen(
                 id = product.id,
                 name = product.productName,
                 quantity = product.quantity,
-                isButton = false,
                 navController = navController,
+                isButton = false,
             )
         }
     }
