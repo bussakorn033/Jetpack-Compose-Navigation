@@ -7,7 +7,7 @@ import com.example.testnavigate.room.product.Product
 import com.example.testnavigate.room.product.ProductRepository
 import com.example.testnavigate.room.product.ProductRoomDatabase
 
-class MainViewModel(application: Application) {
+class ProductViewModel(application: Application) {
 
     val allProducts: LiveData<List<Product>>
     private val repository: ProductRepository

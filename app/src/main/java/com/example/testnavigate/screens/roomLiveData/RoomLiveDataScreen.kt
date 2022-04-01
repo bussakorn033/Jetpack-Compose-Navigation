@@ -2,7 +2,6 @@ package com.example.testnavigate.screens.roomLiveData
 
 import android.app.Application
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,123 +24,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.testnavigate.components.CustomTextField
+import com.example.testnavigate.components.ProductRow
+import com.example.testnavigate.components.TitleRow
 import com.example.testnavigate.room.product.Product
-import com.example.testnavigate.viewModel.MainViewModel
-
-@Composable
-fun TitleRow(head1: String, head2: String, head3: String) {
-    Row(
-        modifier = Modifier
-            .background(MaterialTheme.colors.primary)
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text(
-            head1, color = Color.White,
-            modifier = Modifier
-                .weight(0.1f)
-        )
-        Text(
-            head2, color = Color.White,
-            modifier = Modifier
-                .weight(0.2f)
-        )
-        Text(
-            head3, color = Color.White,
-            modifier = Modifier.weight(0.2f)
-        )
-    }
-}
-
-@Composable
-fun CustomTextField(
-    title: String,
-    textState: String,
-    onTextChange: (String) -> Unit,
-    keyboardType: KeyboardType
-) {
-    val focusManager = LocalFocusManager.current
-    val focus = LocalTextInputService.current
-
-    OutlinedTextField(
-        value = textState,
-        onValueChange = { onTextChange(it) },
-
-        keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.Sentences,
-            autoCorrect = false,
-            keyboardType = keyboardType,
-            imeAction = ImeAction.Next
-        ),
-        keyboardActions = KeyboardActions(
-//            focus?.hideSoftwareKeyboard()
-            onDone = { focusManager.clearFocus() },
-            onGo = { focusManager.clearFocus() },
-            onNext = { focusManager.clearFocus() },
-            onPrevious = { focusManager.clearFocus() },
-            onSearch = { focusManager.clearFocus() },
-            onSend = { focusManager.clearFocus() },
-        ),
-        singleLine = true,
-        label = { Text(title) },
-        modifier = Modifier.padding(10.dp),
-        textStyle = TextStyle(
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
-        )
-    )
-}
-
-
-@Composable
-fun ProductRow(
-    id: Int,
-    name: String,
-    quantity: Int,
-    navController: NavHostController,
-    isButton: Boolean = true,
-) {
-    TextButton(
-        colors = ButtonDefaults.textButtonColors(
-            disabledContentColor = Color.Black
-        ),
-        enabled = isButton,
-        onClick = {
-            if (isButton) {
-                navController.navigate(route = "room_live_data_item/${id}") {
-                    popUpTo("room_live_data") {
-                        saveState = true
-                    }
-                }
-            }
-        }
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(6.dp)
-        ) {
-            Text(
-                id.toString(), modifier = Modifier
-                    .weight(0.1f)
-            )
-            Text(name, modifier = Modifier.weight(0.2f))
-            Text(quantity.toString(), modifier = Modifier.weight(0.2f))
-        }
-    }
-}
-
+import com.example.testnavigate.viewModel.ProductViewModel
 
 @Composable
 fun RoomLiveDataScreen(
-    viewModel: MainViewModel =
-        MainViewModel(LocalContext.current.applicationContext as Application),
+    viewModel: ProductViewModel =
+        ProductViewModel(LocalContext.current.applicationContext as Application),
     navController: NavHostController
 ) {
     val allProducts by viewModel.allProducts.observeAsState(listOf())
     val searchResults by viewModel.searchResults.observeAsState(listOf())
-    MainLayout(
+    RoomLiveDataLayout(
         allProducts = allProducts,
         searchResults = searchResults,
         viewModel = viewModel,
@@ -150,10 +47,10 @@ fun RoomLiveDataScreen(
 }
 
 @Composable
-fun MainLayout(
+fun RoomLiveDataLayout(
     allProducts: List<Product>,
     searchResults: List<Product>,
-    viewModel: MainViewModel,
+    viewModel: ProductViewModel,
     navController: NavHostController
 ) {
     val context = LocalContext.current

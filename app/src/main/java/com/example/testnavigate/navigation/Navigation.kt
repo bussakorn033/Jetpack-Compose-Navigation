@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.testnavigate.screens.add.AddScreen
 import com.example.testnavigate.screens.detail.DetailScreen
-import com.example.testnavigate.screens.childrenDetail.ChildrenDetailScreen
+import com.example.testnavigate.screens.detail.childrenDetail.ChildrenDetailScreen
 import com.example.testnavigate.screens.home.HomeScreen
-import com.example.testnavigate.screens.home.children.ChildrenHomeScreen
+import com.example.testnavigate.screens.home.childrenHome.ChildrenHomeScreen
 import com.example.testnavigate.screens.jobs.JobsScreen
 import com.example.testnavigate.screens.myNetwork.MyNetworkScreen
 import com.example.testnavigate.screens.notification.NotificationScreen

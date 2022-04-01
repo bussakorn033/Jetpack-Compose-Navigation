@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.testnavigate.room.note.Note
-import com.example.testnavigate.viewModel.MainViewModel
+import com.example.testnavigate.viewModel.ProductViewModel
 import com.example.testnavigate.viewModel.NoteViewModel
 import com.example.testnavigate.viewModel.TodoViewModel
 
